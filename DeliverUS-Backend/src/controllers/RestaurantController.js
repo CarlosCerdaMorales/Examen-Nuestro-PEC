@@ -73,10 +73,19 @@ const show = async function (req, res) {
 const update = async function (req, res) {
   try {
     await Restaurant.update(req.body, { where: { id: req.params.restaurantId } })
-    const updatedRestaurant = await Restaurant.findByPk(req.params.restaurantId)
-    res.json(updatedRestaurant)
-  } catch (err) {
-    res.status(500).send(err)
+    const productosActualizar = await Product.findAll({
+      where: {
+        restaurantId: req.params.restaurantId
+      }
+    })
+    for (const p of productosActualizar) {
+      const newPrice = p.basePrice + p.basePrice * (req.body.percentage / 100)
+      await p.update({ price: newPrice })
+    }
+    const updatedR = await Restaurant.findByPk(req.params.restaurantId)
+    res.json(updatedR)
+  } catch (e) {
+    res.status(500).send(e)
   }
 }
 

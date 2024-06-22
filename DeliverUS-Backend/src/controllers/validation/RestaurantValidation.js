@@ -31,6 +31,7 @@ const update = [
   check('description').optional({ nullable: true, checkFalsy: true }).isString().trim(),
   check('address').exists().isString().isLength({ min: 1, max: 255 }).trim(),
   check('postalCode').exists().isString().isLength({ min: 1, max: 255 }),
+  check('percentage').exists().isFloat({ min: -5, max: 5 }).toFloat(),
   check('url').optional({ nullable: true, checkFalsy: true }).isString().isURL().trim(),
   check('shippingCosts').exists().isFloat({ min: 0 }).toFloat(),
   check('email').optional({ nullable: true, checkFalsy: true }).isString().isEmail().trim(),
